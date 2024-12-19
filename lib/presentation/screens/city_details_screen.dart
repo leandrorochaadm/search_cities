@@ -14,12 +14,7 @@ class CityDetailsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Detalhes da Cidade',
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Colors.grey[850],
-        foregroundColor: Colors.white,
+        title: const Text('Detalhes da Cidade'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -30,8 +25,8 @@ class CityDetailsScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(20.0),
               decoration: BoxDecoration(
-                color: Colors.grey[900],
-                borderRadius: BorderRadius.circular(12.0),
+                color: Theme.of(context).cardTheme.color,
+                borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black12,
@@ -45,19 +40,12 @@ class CityDetailsScreen extends StatelessWidget {
                 children: [
                   Text(
                     cityDetails.cityName,
-                    style: const TextStyle(
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   const SizedBox(height: 8.0),
                   Text(
                     "Estado: ${cityDetails.stateName} (${cityDetails.stateAcronym})",
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      color: Colors.white70,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],
               ),
@@ -66,16 +54,19 @@ class CityDetailsScreen extends StatelessWidget {
 
             // Details Section
             _buildDetailItem(
+              context: context,
               icon: Icons.code,
               label: "Código do Município",
               value: cityDetails.cityId.toString(),
             ),
             _buildDetailItem(
+              context: context,
               icon: Icons.location_on,
               label: "Microrregião",
               value: cityDetails.microregionName,
             ),
             _buildDetailItem(
+              context: context,
               icon: Icons.map,
               label: "Mesorregião",
               value: cityDetails.mesoregionName,
@@ -83,11 +74,11 @@ class CityDetailsScreen extends StatelessWidget {
           ],
         ),
       ),
-      backgroundColor: Colors.grey[850],
     );
   }
 
   Widget _buildDetailItem({
+    required BuildContext context,
     required IconData icon,
     required String label,
     required String value,
@@ -99,7 +90,7 @@ class CityDetailsScreen extends StatelessWidget {
           Icon(
             icon,
             size: 32.0,
-            color: Colors.white70,
+            color: Theme.of(context).iconTheme.color,
           ),
           const SizedBox(width: 16.0),
           Expanded(
@@ -108,19 +99,12 @@ class CityDetailsScreen extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: const TextStyle(
-                    fontSize: 14.0,
-                    color: Colors.white54,
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 const SizedBox(height: 4.0),
                 Text(
                   value,
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ],
             ),

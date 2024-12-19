@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'core/theme/theme_custom.dart';
 import 'data/repositories/api_city_repository.dart';
 import 'data/sources/cities_data_source.dart';
 import 'domain/domain.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Cidades do Brasil',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeCustom.dark,
       home: const CityScreen(),
     );
   }

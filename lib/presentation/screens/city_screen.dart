@@ -18,19 +18,15 @@ class CityScreen extends StatelessWidget {
           CityBloc(context.read<GetCitiesUseCase>())..add(FetchCitiesEvent()),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Cidades do Brasil",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0)),
-          backgroundColor: Colors.grey[850],
-          foregroundColor: Colors.white,
+          title: const Text("Cidades do Brasil"),
         ),
-        backgroundColor: Colors.grey[850],
         body: BlocBuilder<CityBloc, CityState>(
           builder: (context, state) {
-            // Construção da interface com base no estado
             if (state is CityLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
             } else if (state is GroupedCitiesLoaded) {
-              // Exibe os dados agrupados
               return ListView.builder(
                 physics: const BouncingScrollPhysics(),
                 itemCount: state.groupedCities.keys.length,
@@ -44,49 +40,22 @@ class CityScreen extends StatelessWidget {
                       vertical: 6.0,
                     ),
                     child: Card(
-                      color: Colors.grey[900],
-                      elevation: 4.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      child: Theme(
-                        data: Theme.of(context).copyWith(
-                          dividerColor: Colors.transparent,
-                        ),
-                        child: ExpansionTile(
-                          title: Text(
-                            stateName,
-                            style: const TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                          iconColor: Colors.white70,
-                          collapsedIconColor: Colors.white70,
-                          // collapsedBackgroundColor: Colors.redAccent,
-                          backgroundColor: Colors.grey[800],
-                          collapsedShape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          children: cities.map((city) {
-                            return CityItemWidget(
-                              city: city,
-                              onCityTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        CityDetailsScreen(city: city),
-                                  ),
-                                );
-                              },
-                            );
-                          }).toList(),
-                        ),
+                      child: ExpansionTile(
+                        title: Text(stateName),
+                        children: cities.map((city) {
+                          return CityItemWidget(
+                            city: city,
+                            onCityTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      CityDetailsScreen(city: city),
+                                ),
+                              );
+                            },
+                          );
+                        }).toList(),
                       ),
                     ),
                   );
@@ -106,27 +75,22 @@ class CityScreen extends StatelessWidget {
                     Text(
                       state.message,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.redAccent,
-                      ),
+                      style: Theme.of(context).textTheme.labelLarge,
                     ),
                     const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
                         context.read<CityBloc>().add(FetchCitiesEvent());
                       },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey[800],
-                      ),
                       child: const Text("Tentar novamente"),
                     ),
                   ],
                 ),
               );
             } else {
-              return const Center(child: Text("Ocorreu um erro inesperado."));
+              return const Center(
+                child: Text("Ocorreu um erro inesperado."),
+              );
             }
           },
         ),
