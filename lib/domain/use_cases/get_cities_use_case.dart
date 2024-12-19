@@ -12,6 +12,8 @@ class GetCitiesUseCase {
   Future<Either<Failure, List<CityEntity>>> call() async {
     try {
       final cities = await _citiesRepository.getCities();
+      cities.sort((a, b) => a.name.compareTo(b.name));
+
       return Right(cities); // Retorno bem-sucedido
     } on Exception catch (e) {
       // Converte a exceção em uma Failure usando Failure.fromException

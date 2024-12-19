@@ -30,8 +30,14 @@ class CityBloc extends Bloc<CityEvent, CityState> {
               city.microregion?.mesoregion?.sa?.name ?? "Estado Desconhecido",
         );
 
+        // Ordenar as chaves do mapa
+        final sortedGroupedCities = Map.fromEntries(
+          groupedCities.entries.toList()
+            ..sort((a, b) => a.key.compareTo(b.key)),
+        );
+
         // Emitir o estado com as cidades agrupadas
-        emit(GroupedCitiesLoaded(groupedCities));
+        emit(GroupedCitiesLoaded(sortedGroupedCities));
       },
     );
   }

@@ -18,7 +18,8 @@ class CityScreen extends StatelessWidget {
           CityBloc(context.read<GetCitiesUseCase>())..add(FetchCitiesEvent()),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Cidades do Brasil"),
+          title: const Text("Cidades do Brasil",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0)),
           backgroundColor: Colors.grey[850],
           foregroundColor: Colors.white,
         ),
@@ -63,6 +64,14 @@ class CityScreen extends StatelessWidget {
                           ),
                           iconColor: Colors.white70,
                           collapsedIconColor: Colors.white70,
+                          // collapsedBackgroundColor: Colors.redAccent,
+                          backgroundColor: Colors.grey[800],
+                          collapsedShape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
                           children: cities.map((city) {
                             return CityItemWidget(
                               city: city,
