@@ -16,11 +16,5 @@ class RegionEntity {
     return "$id, $acronym, $name, ";
   }
 
-  factory RegionEntity.fromModel(RegionModel model) {
-    return RegionEntity(
-      id: model.id,
-      acronym: model.acronym,
-      name: model.name,
-    );
-  }
+  RegionModel toModel() => RegionModel(id: id, acronym: acronym, name: name);
 }

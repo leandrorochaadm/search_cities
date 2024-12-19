@@ -12,7 +12,7 @@ class ApiCitiesRepository implements CitiesRepository {
     try {
       final models = await _citiesDataSource.getCities();
       return models
-          .map<CityEntity>((cityModel) => CityEntity.fromModel(cityModel))
+          .map<CityEntity>((cityModel) => cityModel.toEntity())
           .toList();
     } on Exception catch (e) {
       // Transformando a exceção em uma falha

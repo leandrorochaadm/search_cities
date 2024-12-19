@@ -1,3 +1,4 @@
+import '../../domain/entities/entities.dart';
 import 'models.dart';
 
 class SaModel {
@@ -34,4 +35,11 @@ class SaModel {
   String toString() {
     return "$id, $acronym, $name, $region, ";
   }
+
+  SaEntity toEntity() => SaEntity(
+        id: id,
+        acronym: acronym,
+        name: name,
+        region: region?.toEntity(),
+      );
 }

@@ -19,13 +19,10 @@ class SaEntity {
     return "$id, $acronym, $name, $region, ";
   }
 
-  factory SaEntity.fromModel(SaModel model) {
-    return SaEntity(
-      id: model.id,
-      acronym: model.acronym,
-      name: model.name,
-      region:
-          model.region == null ? null : RegionEntity.fromModel(model.region!),
-    );
-  }
+  SaModel toModel() => SaModel(
+        id: id,
+        acronym: acronym,
+        name: name,
+        region: region?.toModel(),
+      );
 }

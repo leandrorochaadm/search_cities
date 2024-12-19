@@ -1,3 +1,5 @@
+import '../../domain/domain.dart';
+
 class RegionModel {
   RegionModel({
     required this.id,
@@ -26,5 +28,13 @@ class RegionModel {
   @override
   String toString() {
     return "$id, $acronym, $name, ";
+  }
+
+  RegionEntity toEntity() {
+    return RegionEntity(
+      id: id,
+      acronym: acronym,
+      name: name,
+    );
   }
 }

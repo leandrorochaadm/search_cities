@@ -4,21 +4,17 @@ import 'entities.dart';
 class MicroregionEntity {
   MicroregionEntity({
     required this.id,
-    required this.nome,
+    required this.name,
     required this.mesoregion,
   });
 
   final int id;
-  final String nome;
+  final String name;
   final MesoregionEntity? mesoregion;
 
-  factory MicroregionEntity.fromModel(MicroregionModel model) {
-    return MicroregionEntity(
-      id: model.id,
-      nome: model.name,
-      mesoregion: model.mesoregion != null
-          ? MesoregionEntity.fromModel(model.mesoregion!)
-          : null,
-    );
-  }
+  MicroregionModel toModel() => MicroregionModel(
+        id: id,
+        name: name,
+        mesoregion: mesoregion?.toModel(),
+      );
 }

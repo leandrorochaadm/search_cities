@@ -12,11 +12,6 @@ class MesoregionEntity {
   final String name;
   final SaEntity? sa;
 
-  factory MesoregionEntity.fromModel(MesoregionModel model) {
-    return MesoregionEntity(
-      id: model.id,
-      name: model.name,
-      sa: model.sa != null ? SaEntity.fromModel(model.sa!) : null,
-    );
-  }
+  MesoregionModel toModel() =>
+      MesoregionModel(id: id, name: name, sa: sa?.toModel());
 }

@@ -1,3 +1,4 @@
+import '../../domain/entities/entities.dart';
 import 'models.dart';
 
 class MicroregionModel {
@@ -31,4 +32,7 @@ class MicroregionModel {
   String toString() {
     return "$id, $name, $mesoregion, ";
   }
+
+  MicroregionEntity toEntity() =>
+      MicroregionEntity(id: id, name: name, mesoregion: mesoregion?.toEntity());
 }

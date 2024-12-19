@@ -1,3 +1,4 @@
+import '../../domain/entities/entities.dart';
 import 'models.dart';
 
 class MesoregionModel {
@@ -29,4 +30,6 @@ class MesoregionModel {
   String toString() {
     return "$id, $name, $sa, ";
   }
+
+  toEntity() => MesoregionEntity(id: id, name: name, sa: sa?.toEntity());
 }
