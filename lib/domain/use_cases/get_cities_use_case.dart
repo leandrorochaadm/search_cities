@@ -13,9 +13,9 @@ class GetCitiesUseCase {
     try {
       final cities = await _citiesRepository.getCities();
       return Right(cities); // Retorno bem-sucedido
-    } catch (e) {
+    } on Exception catch (e) {
       // Converte a exceção em uma Failure usando Failure.fromException
-      final failure = Failure.fromException(e as Exception);
+      final failure = Failure.fromException(e);
       return Left(failure); // Retorno com erro
     }
   }
