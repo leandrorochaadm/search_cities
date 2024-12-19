@@ -30,7 +30,7 @@ class CityModel {
 
   @override
   String toString() {
-    return "$id, $name, $microregion,  ";
+    return "$id, $name, $microregion,  \n";
   }
 
   toEntity() =>

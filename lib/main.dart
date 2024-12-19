@@ -1,18 +1,39 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import 'data/repositories/api_city_repository.dart';
+import 'data/sources/cities_data_source.dart';
+import 'domain/domain.dart';
 import 'presentation/presentation.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        Provider<Dio>(create: (_) => Dio()),
+        Provider<GetCitiesUseCase>(
+          create: (context) => GetCitiesUseCase(
+            ApiCitiesRepository(
+              CitiesDataSource(context.read<Dio>()),
+            ),
+          ),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: CityScreen(),
+    return MaterialApp(
+      title: 'Cidades do Brasil',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: const CityScreen(),
     );
   }
 }
