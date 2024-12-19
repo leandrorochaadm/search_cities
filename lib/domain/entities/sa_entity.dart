@@ -1,3 +1,4 @@
+import '../../data/models/sa_model.dart';
 import 'entities.dart';
 
 class SaEntity {
@@ -16,5 +17,15 @@ class SaEntity {
   @override
   String toString() {
     return "$id, $acronym, $name, $region, ";
+  }
+
+  factory SaEntity.fromModel(SaModel model) {
+    return SaEntity(
+      id: model.id,
+      acronym: model.acronym,
+      name: model.name,
+      region:
+          model.region == null ? null : RegionEntity.fromModel(model.region!),
+    );
   }
 }

@@ -1,3 +1,4 @@
+import '../../data/models/mesoregion_model.dart';
 import 'sa_entity.dart';
 
 class MesoregionEntity {
@@ -10,4 +11,12 @@ class MesoregionEntity {
   final int id;
   final String name;
   final SaEntity? sa;
+
+  factory MesoregionEntity.fromModel(MesoregionModel model) {
+    return MesoregionEntity(
+      id: model.id,
+      name: model.name,
+      sa: model.sa != null ? SaEntity.fromModel(model.sa!) : null,
+    );
+  }
 }
