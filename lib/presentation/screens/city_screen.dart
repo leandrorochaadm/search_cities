@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../domain/domain.dart';
-import '../blocs/blocs.dart';
-import '../models/city_info_model.dart';
+import '../../domain/use_cases/get_cities_use_case.dart';
+import '../blocs/city_bloc.dart';
+import '../blocs/city_event.dart';
+import '../blocs/city_state.dart';
+import '../widget/city_item_widget.dart';
 import 'city_details_screen.dart';
 
 class CityScreen extends StatelessWidget {
@@ -16,101 +18,65 @@ class CityScreen extends StatelessWidget {
           CityBloc(context.read<GetCitiesUseCase>())..add(FetchCitiesEvent()),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(
-            "Cidades do Brasil",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            ),
-          ),
-          centerTitle: true,
+          title: const Text("Cidades do Brasil"),
           backgroundColor: Colors.grey[850],
           foregroundColor: Colors.white,
         ),
+        backgroundColor: Colors.grey[850],
         body: BlocBuilder<CityBloc, CityState>(
           builder: (context, state) {
+            // Construção da interface com base no estado
             if (state is CityLoading) {
-              // Indicador de carregamento elegante
-              return const Center(
-                child: CircularProgressIndicator(
-                  strokeWidth: 4.0,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
-                ),
-              );
-            } else if (state is CityLoaded) {
-              // Lista de cidades com design sóbrio
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is GroupedCitiesLoaded) {
+              // Exibe os dados agrupados
               return ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                itemCount: state.cities.length,
+                itemCount: state.groupedCities.keys.length,
                 itemBuilder: (context, index) {
-                  final city = state.cities[index];
-                  final cityInfo = city.toCityInfo();
+                  final stateName = state.groupedCities.keys.elementAt(index);
+                  final cities = state.groupedCities[stateName]!;
 
                   return Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 12.0,
-                      vertical: 8.0,
+                      vertical: 6.0,
                     ),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                CityDetailsScreen(cityEntity: city),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(16.0),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[900],
-                          borderRadius: BorderRadius.circular(12.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 6,
-                              offset: const Offset(2, 2),
-                            ),
-                          ],
+                    child: Card(
+                      color: Colors.grey[900],
+                      elevation: 4.0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: Theme(
+                        data: Theme.of(context).copyWith(
+                          dividerColor: Colors.transparent,
                         ),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.location_city,
-                              size: 40,
-                              color: Colors.white70,
+                        child: ExpansionTile(
+                          title: Text(
+                            stateName,
+                            style: const TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
-                            const SizedBox(width: 16.0),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    cityInfo.cityName,
-                                    style: const TextStyle(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
+                          ),
+                          iconColor: Colors.white70,
+                          collapsedIconColor: Colors.white70,
+                          children: cities.map((city) {
+                            return CityItemWidget(
+                              city: city,
+                              onCityTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        CityDetailsScreen(city: city),
                                   ),
-                                  const SizedBox(height: 4.0),
-                                  Text(
-                                    "${cityInfo.stateName} (${cityInfo.stateAcronym})",
-                                    style: const TextStyle(
-                                      fontSize: 14.0,
-                                      color: Colors.white70,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Icon(
-                              Icons.arrow_forward_ios,
-                              size: 20,
-                              color: Colors.white54,
-                            ),
-                          ],
+                                );
+                              },
+                            );
+                          }).toList(),
                         ),
                       ),
                     ),
@@ -118,7 +84,6 @@ class CityScreen extends StatelessWidget {
                 },
               );
             } else if (state is CityError) {
-              // Mensagem de erro com estilo elegante
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -144,35 +109,18 @@ class CityScreen extends StatelessWidget {
                         context.read<CityBloc>().add(FetchCitiesEvent());
                       },
                       style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24.0,
-                          vertical: 12.0,
-                        ),
                         backgroundColor: Colors.grey[800],
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
                       ),
-                      child: const Text(
-                        "Tentar novamente",
-                        style: TextStyle(fontSize: 16, color: Colors.white),
-                      ),
+                      child: const Text("Tentar novamente"),
                     ),
                   ],
                 ),
               );
             } else {
-              // Estado inesperado
-              return const Center(
-                child: Text(
-                  "Ocorreu um erro inesperado.",
-                  style: TextStyle(color: Colors.white70),
-                ),
-              );
+              return const Center(child: Text("Ocorreu um erro inesperado."));
             }
           },
         ),
-        backgroundColor: Colors.grey[850],
       ),
     );
   }

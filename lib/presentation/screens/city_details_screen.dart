@@ -4,13 +4,13 @@ import '../../domain/entities/city_entity.dart';
 import '../models/models.dart';
 
 class CityDetailsScreen extends StatelessWidget {
-  final CityEntity cityEntity;
+  final CityEntity city;
 
-  const CityDetailsScreen({super.key, required this.cityEntity});
+  const CityDetailsScreen({super.key, required this.city});
 
   @override
   Widget build(BuildContext context) {
-    final city = cityEntity.toCityDetails();
+    final cityDetails = city.toCityDetails();
 
     return Scaffold(
       appBar: AppBar(
@@ -44,7 +44,7 @@ class CityDetailsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    city.cityName,
+                    cityDetails.cityName,
                     style: const TextStyle(
                       fontSize: 24.0,
                       fontWeight: FontWeight.bold,
@@ -53,7 +53,7 @@ class CityDetailsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8.0),
                   Text(
-                    "Estado: ${city.stateName} (${city.stateAcronym})",
+                    "Estado: ${cityDetails.stateName} (${cityDetails.stateAcronym})",
                     style: const TextStyle(
                       fontSize: 16.0,
                       color: Colors.white70,
@@ -68,17 +68,17 @@ class CityDetailsScreen extends StatelessWidget {
             _buildDetailItem(
               icon: Icons.code,
               label: "Código do Município",
-              value: city.cityId.toString(),
+              value: cityDetails.cityId.toString(),
             ),
             _buildDetailItem(
               icon: Icons.location_on,
               label: "Microrregião",
-              value: city.microregionName,
+              value: cityDetails.microregionName,
             ),
             _buildDetailItem(
               icon: Icons.map,
               label: "Mesorregião",
-              value: city.mesoregionName,
+              value: cityDetails.mesoregionName,
             ),
           ],
         ),

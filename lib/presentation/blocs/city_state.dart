@@ -26,3 +26,12 @@ class CityError extends CityState {
   @override
   List<Object?> get props => [message];
 }
+
+class GroupedCitiesLoaded extends CityState {
+  final Map<String, List<CityEntity>> groupedCities;
+
+  GroupedCitiesLoaded(this.groupedCities);
+
+  @override
+  List<Object?> get props => [groupedCities];
+}
