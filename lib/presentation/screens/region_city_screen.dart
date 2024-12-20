@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/domain.dart';
 import '../presentation.dart';
+import '../widgets/widgets.dart';
 import 'city_details_screen.dart';
 
 class RegionCityScreen extends StatelessWidget {
@@ -27,15 +28,29 @@ class RegionCityScreen extends StatelessWidget {
                 } else if (state is RegionsLoaded) {
                   return Column(
                     children: [
-                      RegionDropdown(regions: state.regions),
+                      RegionDropdown(
+                          regions: state.regions,
+                          selectedRegionId: state.selectedRegionId),
                       if (state.cities != null)
                         Expanded(
                           child: CityList(cities: state.cities!),
                         ),
+                      if (state.cities == null)
+                        Expanded(
+                            child: Center(
+                                child: Text(
+                          "Selecione um estado,\nno campo acima.",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                          textAlign: TextAlign.center,
+                        ))),
                     ],
                   );
                 } else if (state is RegionCityError) {
-                  return Center(child: Text(state.message));
+                  return ErrorCustomWidget(
+                      message: state.message,
+                      onRetry: () {
+                        context.read<RegionCityBloc>().add(FetchRegionsEvent());
+                      });
                 } else {
                   return const Center(
                       child: Text("Ocorreu um erro inesperado."));
@@ -51,44 +66,64 @@ class RegionCityScreen extends StatelessWidget {
 
 class RegionDropdown extends StatelessWidget {
   final List<RegionEntity> regions;
+  final int? selectedRegionId;
 
-  const RegionDropdown({super.key, required this.regions});
+  const RegionDropdown(
+      {super.key, required this.regions, this.selectedRegionId});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
+        color: Colors.grey.shade600,
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: DropdownButton<int>(
         isExpanded: true,
-        hint: const Text("Selecione um estado"),
+        hint: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text(
+            "Selecione um estado",
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+        ),
         itemHeight: 72,
         underline: SizedBox.shrink(),
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        style: Theme.of(context).textTheme.bodyLarge,
-        items: regions.map(
-          (region) {
-            return DropdownMenuItem(
-              value: region.id,
-              alignment: AlignmentDirectional.center,
-              child: ListTile(
-                title: Text("${region.name} (${region.acronym})"),
-                splashColor: Colors.grey.shade800,
-                leading: Icon(Icons.location_on),
-                trailing: Icon(Icons.arrow_forward_ios),
+        value: selectedRegionId,
+        items: [
+          DropdownMenuItem<int>(
+            value: null,
+            alignment: AlignmentDirectional.center,
+            child: ListTile(
+              title: Text(
+                ""
+                "Selecione um estado",
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
-            );
-          },
-        ).toList(),
+              leading: Icon(Icons.clear),
+            ),
+          ),
+          ...regions.map(
+            (region) {
+              return DropdownMenuItem(
+                value: region.id,
+                alignment: AlignmentDirectional.center,
+                child: ListTile(
+                  title: Text("${region.name} (${region.acronym})"),
+                  splashColor: Colors.grey.shade800,
+                  leading: Icon(Icons.my_location),
+                ),
+              );
+            },
+          ),
+        ],
         onChanged: (regionId) {
-          if (regionId != null) {
-            context
-                .read<RegionCityBloc>()
-                .add(FetchCitiesByRegionEvent(regionId));
-          }
+          context.read<RegionCityBloc>().add(
+                regionId != null
+                    ? FetchCitiesByRegionEvent(regionId)
+                    : ClearCitiesEvent(),
+              );
         },
       ),
     );

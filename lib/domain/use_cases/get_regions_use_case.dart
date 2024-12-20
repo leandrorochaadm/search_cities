@@ -14,10 +14,14 @@ class GetRegionsUseCase {
       final regions = await regionsRepository.getRegions();
 
       return Right(regions); // Retorno bem-sucedido
+    } on NetworkException catch (_) {
+      return Left(Failure.network('Não foi possivel carregar os estados'));
     } on Exception catch (e) {
       // Converte a exceção em uma Failure usando Failure.fromException
       final failure = Failure.fromException(e);
-      return Left(failure); // Retorno com erro
+      return Left(failure);
+    } catch (_) {
+      return Left(Failure.unknown());
     }
   }
 }

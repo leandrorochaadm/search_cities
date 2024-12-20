@@ -14,11 +14,13 @@ class GetCitiesByRegionUseCase {
     try {
       final cities = await citiesRepository.getCities(regionId);
 
-      return Right(cities); // Retorno bem-sucedido
+      return Right(cities);
+    } on NetworkException catch (_) {
+      return Left(Failure.network('Não foi possivel carregar as cidades'));
     } on Exception catch (e) {
       // Converte a exceção em uma Failure usando Failure.fromException
       final failure = Failure.fromException(e);
-      return Left(failure); // Retorno com erro
+      return Left(failure);
     } catch (_) {
       return Left(Failure.unknown());
     }

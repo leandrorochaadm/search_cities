@@ -14,11 +14,12 @@ class RegionCityLoading extends RegionCityState {}
 class RegionsLoaded extends RegionCityState {
   final List<RegionEntity> regions;
   final List<CityEntity>? cities;
+  final int? selectedRegionId;
 
-  RegionsLoaded({required this.regions, this.cities});
+  RegionsLoaded({required this.regions, this.cities, this.selectedRegionId});
 
   @override
-  List<Object?> get props => [regions, cities];
+  List<Object?> get props => [regions, cities, selectedRegionId];
 }
 
 class CitiesLoaded extends RegionCityState {

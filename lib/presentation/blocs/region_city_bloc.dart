@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../core/errors/failure.dart';
 import '../../domain/domain.dart';
 import '../presentation.dart';
 
@@ -14,6 +13,7 @@ class RegionCityBloc extends Bloc<RegionCityEvent, RegionCityState> {
   }) : super(RegionCityInitial()) {
     on<FetchRegionsEvent>(_onFetchRegions);
     on<FetchCitiesByRegionEvent>(_onFetchCitiesByRegion);
+    on<ClearCitiesEvent>(_onClearCities);
   }
 
   Future<void> _onFetchRegions(
@@ -23,7 +23,19 @@ class RegionCityBloc extends Bloc<RegionCityEvent, RegionCityState> {
     final result = await getRegionsUseCase();
 
     result.fold(
-      (failure) => emit(RegionCityError(_mapFailureToMessage(failure))),
+      (failure) => emit(RegionCityError(failure.message)),
+      (regions) => emit(RegionsLoaded(regions: regions, cities: null)),
+    );
+  }
+
+  Future<void> _onClearCities(
+      ClearCitiesEvent event, Emitter<RegionCityState> emit) async {
+    emit(RegionCityLoading());
+
+    final result = await getRegionsUseCase();
+
+    result.fold(
+      (failure) => emit(RegionCityError(failure.message)),
       (regions) => emit(RegionsLoaded(regions: regions, cities: null)),
     );
   }
@@ -40,19 +52,9 @@ class RegionCityBloc extends Bloc<RegionCityEvent, RegionCityState> {
         await getCitiesByRegionUseCase.call(regionId: event.regionId);
 
     result.fold(
-      (failure) => emit(RegionCityError(_mapFailureToMessage(failure))),
-      (cities) => emit(RegionsLoaded(regions: regions, cities: cities)),
+      (failure) => emit(RegionCityError(failure.message)),
+      (cities) => emit(RegionsLoaded(
+          regions: regions, cities: cities, selectedRegionId: event.regionId)),
     );
-  }
-
-  String _mapFailureToMessage(Failure failure) {
-    switch (failure.runtimeType) {
-      case ServerFailure:
-        return "Erro no servidor. Tente novamente mais tarde.";
-      case NetworkFailure:
-        return "Verifique sua conexão com a internet.";
-      default:
-        return "Um erro inesperado ocorreu.";
-    }
   }
 }

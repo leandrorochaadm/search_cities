@@ -24,6 +24,8 @@ class RegionsDataSource {
     } on DioException catch (e) {
       // Tratamento de erros específicos do Dio
       throw HandleDioException.call(e);
+    } on AppException catch (_) {
+      rethrow;
     } catch (e) {
       throw UnknownErrorException("An unknown error occurred: $e");
     }

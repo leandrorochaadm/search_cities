@@ -15,3 +15,5 @@ class FetchCitiesByRegionEvent extends RegionCityEvent {
   @override
   List<Object?> get props => [regionId];
 }
+
+class ClearCitiesEvent extends RegionCityEvent {}
