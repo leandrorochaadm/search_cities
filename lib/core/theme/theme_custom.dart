@@ -4,7 +4,7 @@ class ThemeCustom {
   ThemeCustom._();
   static ThemeData dark = ThemeData(
     brightness: Brightness.dark,
-    primaryColor: Colors.grey.shade900,
+    primaryColor: Colors.grey.shade800,
     scaffoldBackgroundColor: Colors.grey.shade900,
     appBarTheme: AppBarTheme(
       backgroundColor: Colors.grey.shade900,
@@ -17,7 +17,7 @@ class ThemeCustom {
       ),
     ),
     cardTheme: CardTheme(
-      color: Colors.grey.shade700,
+      color: Colors.grey.shade800,
       elevation: 4.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
@@ -71,6 +71,19 @@ class ThemeCustom {
     ),
     progressIndicatorTheme: ProgressIndicatorThemeData(
       color: Colors.white,
+    ),
+    listTileTheme: ListTileThemeData(
+      tileColor: Colors.grey.shade800,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      textColor: Colors.white,
+      iconColor: Colors.white,
+      style: ListTileStyle.drawer,
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: 16.0,
+        vertical: 0.0,
+      ),
     ),
   );
 }

@@ -13,20 +13,22 @@ class RegionCityLoading extends RegionCityState {}
 
 class RegionsLoaded extends RegionCityState {
   final List<RegionEntity> regions;
+  final List<CityEntity>? cities;
 
-  RegionsLoaded(this.regions);
+  RegionsLoaded({required this.regions, this.cities});
 
   @override
-  List<Object?> get props => [regions];
+  List<Object?> get props => [regions, cities];
 }
 
 class CitiesLoaded extends RegionCityState {
-  final List<CityEntity> cities;
+  final List<RegionEntity> regions; // Preserva as regiões
+  final List<CityEntity> cities; // Lista de cidades carregadas
 
-  CitiesLoaded(this.cities);
+  CitiesLoaded({required this.regions, required this.cities});
 
   @override
-  List<Object?> get props => [cities];
+  List<Object?> get props => [regions, cities];
 }
 
 class RegionCityError extends RegionCityState {
