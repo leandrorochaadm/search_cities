@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Cidades do Brasil',
+      title: 'Cidades por estados do Brasil',
       debugShowCheckedModeBanner: false,
       theme: ThemeCustom.dark,
       home: const CityScreen(),

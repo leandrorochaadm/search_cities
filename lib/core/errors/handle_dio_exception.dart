@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import 'exceptions.dart';
+import 'app_exception.dart';
 
 class HandleDioException {
   HandleDioException._();
@@ -8,11 +8,11 @@ class HandleDioException {
   static Exception call(DioException exception) {
     switch (exception.type) {
       case DioExceptionType.connectionTimeout:
-        return ConnectionTimeoutException(
+        return NetworkException(
           "Connection timeout. Please check your internet.",
         );
       case DioExceptionType.receiveTimeout:
-        return ReceiveTimeoutException(
+        return NetworkException(
           "Response timeout. Please try again.",
         );
       case DioExceptionType.badResponse:
@@ -20,11 +20,15 @@ class HandleDioException {
           "Server error (${exception.response?.statusCode})",
         );
       case DioExceptionType.cancel:
-        return RequestCanceledException(
+        return NetworkException(
           "Request canceled.",
         );
+      case DioExceptionType.sendTimeout:
+        return NetworkException(
+          "Request send Timeout.",
+        );
       case DioExceptionType.connectionError:
-        return ConnectionErrorException(
+        return NetworkException(
           "Unexpected error: ${exception.message}",
         );
       default:

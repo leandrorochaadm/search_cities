@@ -14,13 +14,13 @@ class CitiesDataSource {
           'https://servicodados.ibge.gov.br/api/v1/localidades/municipios';
       final response = await dio.get(url);
 
-      if (response.statusCode == 200) {
-        return (response.data as List)
-            .map((json) => CityModel.fromJson(json))
-            .toList();
-      } else {
-        throw ServerErrorException("Server error: ${response.statusCode}");
+      if (response.statusCode != 200) {
+        throw NetworkException('${response.statusCode}');
       }
+
+      return (response.data as List)
+          .map((json) => CityModel.fromJson(json))
+          .toList();
     } on DioException catch (e) {
       // Tratamento de erros específicos do Dio
       throw HandleDioException.call(e);

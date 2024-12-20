@@ -15,7 +15,7 @@ class CityScreen extends StatelessWidget {
       create: (context) =>
           CityBloc(context.read<GetCitiesUseCase>())..add(FetchCitiesEvent()),
       child: Scaffold(
-        appBar: AppBar(title: const Text("Estados e Cidades no Brasil")),
+        appBar: AppBar(title: const Text("Cidades por estado do Brasil")),
         body: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 12.0,

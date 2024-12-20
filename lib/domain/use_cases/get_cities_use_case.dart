@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 
-import '../../core/errors/failure.dart';
+import '../../core/core.dart';
 import '../entities/city_entity.dart';
 import '../repositories/cities_repository.dart';
 

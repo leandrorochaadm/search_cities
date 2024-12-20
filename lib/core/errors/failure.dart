@@ -1,4 +1,4 @@
-import 'exceptions.dart';
+import 'app_exception.dart';
 
 abstract class Failure {
   final String message;
@@ -7,27 +7,29 @@ abstract class Failure {
 
   factory Failure.fromException(Exception exception) {
     switch (exception.runtimeType) {
-      case const (ConnectionTimeoutException):
-        return NetworkFailure(
-            (exception as ConnectionTimeoutException).message);
-      case const (ReceiveTimeoutException):
-        return NetworkFailure((exception as ReceiveTimeoutException).message);
+      case const (NetworkException):
+        return Failure.network();
+
       case const (ServerErrorException):
-        return ServerFailure((exception as ServerErrorException).message);
-      case const (RequestCanceledException):
-        return NetworkFailure((exception as RequestCanceledException).message);
-      case const (ConnectionErrorException):
-        return NetworkFailure((exception as ConnectionErrorException).message);
-      case const (UnknownErrorException):
-        return UnknownFailure((exception as UnknownErrorException).message);
+        return Failure.server();
+
       default:
-        return UnknownFailure("An unexpected error occurred.");
+        return Failure.unknown();
     }
   }
 
-  factory Failure.server({required String message}) => ServerFailure(message);
-  factory Failure.network({required String message}) => NetworkFailure(message);
-  factory Failure.unknown({required String message}) => UnknownFailure(message);
+  factory Failure.server(
+          [String message = 'Erro no servidor. Tente novamente mais tarde.']) =>
+      ServerFailure(message);
+  factory Failure.network(
+          [String message =
+              'Erro na conexão com o servidor. Tente novamente mais tarde.']) =>
+      NetworkFailure(message);
+  factory Failure.unknown([String message = 'Um erro inesperado ocorreu.']) =>
+      UnknownFailure(message);
+
+  @override
+  String toString() => "type $runtimeType: message $message";
 }
 
 class ServerFailure extends Failure {

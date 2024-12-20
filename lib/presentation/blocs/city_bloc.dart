@@ -1,9 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../core/core.dart';
 import '../../domain/domain.dart';
-import '../presentation.dart'; // Necessário para o groupBy
+import '../presentation.dart';
 
 class CityBloc extends Bloc<CityEvent, CityState> {
   final GetCitiesUseCase getCitiesUseCase;
@@ -21,7 +20,7 @@ class CityBloc extends Bloc<CityEvent, CityState> {
     final result = await getCitiesUseCase();
 
     result.fold(
-      (failure) => emit(CityError(_mapFailureToMessage(failure))),
+      (failure) => emit(CityError(failure.message)),
       (cities) {
         // Agrupar cidades por estado
         final groupedCities = groupBy<CityEntity, String>(
@@ -41,17 +40,5 @@ class CityBloc extends Bloc<CityEvent, CityState> {
         emit(CityLoaded(sortedGroupedCities));
       },
     );
-  }
-
-  String _mapFailureToMessage(Failure failure) {
-    switch (failure.runtimeType) {
-      case const (ServerFailure):
-        return "Erro no servidor. Tente novamente mais tarde.";
-      case const (NetworkFailure):
-        return "Verifique sua conexão com a internet e tente novamente.";
-      case const (UnknownFailure):
-      default:
-        return "Um erro inesperado ocorreu.";
-    }
   }
 }
