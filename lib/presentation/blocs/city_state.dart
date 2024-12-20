@@ -1,28 +1,39 @@
 import 'package:equatable/equatable.dart';
 
-import '../../domain/domain.dart';
+import '../../domain/entities/entities.dart';
 
-abstract class CityState extends Equatable {
+abstract class RegionCityState extends Equatable {
   @override
   List<Object?> get props => [];
 }
 
-class CityLoading extends CityState {}
+class RegionCityInitial extends RegionCityState {}
 
-class CityError extends CityState {
+class RegionCityLoading extends RegionCityState {}
+
+class RegionsLoaded extends RegionCityState {
+  final List<RegionEntity> regions;
+
+  RegionsLoaded(this.regions);
+
+  @override
+  List<Object?> get props => [regions];
+}
+
+class CitiesLoaded extends RegionCityState {
+  final List<CityEntity> cities;
+
+  CitiesLoaded(this.cities);
+
+  @override
+  List<Object?> get props => [cities];
+}
+
+class RegionCityError extends RegionCityState {
   final String message;
 
-  CityError(this.message);
+  RegionCityError(this.message);
 
   @override
   List<Object?> get props => [message];
-}
-
-class CityLoaded extends CityState {
-  final Map<String, List<CityEntity>> groupedCities;
-
-  CityLoaded(this.groupedCities);
-
-  @override
-  List<Object?> get props => [groupedCities];
 }

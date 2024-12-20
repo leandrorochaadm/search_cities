@@ -1,38 +1,56 @@
-import '../../domain/entities/entities.dart';
-import 'models.dart';
+import 'package:equatable/equatable.dart';
 
-class CityModel {
-  CityModel({
-    required this.id,
-    required this.name,
+import '../../domain/entities/city_entity.dart';
+
+class CityModel extends Equatable {
+  const CityModel({
+    required this.cityId,
+    required this.cityName,
     required this.microregion,
+    required this.mesoregion,
+    required this.saAcronym,
+    required this.saName,
   });
 
-  final int id;
-  final String name;
-  final MicroregionModel? microregion;
+  final int cityId;
+  final String cityName;
+  final String microregion;
+  final String mesoregion;
+  final String saAcronym;
+  final String saName;
 
   factory CityModel.fromJson(Map<String, dynamic> json) {
     return CityModel(
-      id: json["id"] ?? 0,
-      name: json["nome"] ?? "",
-      microregion: json["microrregiao"] == null
-          ? null
-          : MicroregionModel.fromJson(json["microrregiao"]),
+      cityId: json["municipio-id"] ?? 0,
+      cityName: json["municipio-nome"] ?? "",
+      microregion: json["microrregiao-nome"] ?? "",
+      mesoregion: json["mesorregiao-nome"] ?? "",
+      saAcronym: json["UF-sigla"] ?? "",
+      saName: json["UF-nome"] ?? "",
     );
   }
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "nome": name,
-        "microrregiao": microregion?.toJson(),
-      };
-
   @override
   String toString() {
-    return "$id, $name, $microregion,  \n";
+    return "$cityId, $cityName, $microregion, $mesoregion, $saAcronym, $saName, ";
   }
 
-  toEntity() =>
-      CityEntity(id: id, name: name, microregion: microregion?.toEntity());
+  @override
+  List<Object?> get props => [
+        cityId,
+        cityName,
+        microregion,
+        mesoregion,
+        saAcronym,
+        saName,
+      ];
+
+  toEntity() => CityEntity(
+        cityId: cityId,
+        cityName: cityName,
+        microregion: microregion,
+        mesoregion: mesoregion,
+        saAcronym: saAcronym,
+        saName: saName,
+      );
 }

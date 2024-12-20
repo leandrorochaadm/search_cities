@@ -1,44 +1,41 @@
-import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/domain.dart';
-import '../presentation.dart';
+import 'blocs.dart';
 
-class CityBloc extends Bloc<CityEvent, CityState> {
-  final GetCitiesUseCase getCitiesUseCase;
+class RegionCityBloc extends Bloc<RegionCityEvent, RegionCityState> {
+  final GetRegionsUseCase getRegionsUseCase;
+  final GetCitiesByRegionUseCase getCitiesByRegionUseCase;
 
-  CityBloc(this.getCitiesUseCase) : super(CityLoading()) {
-    on<FetchCitiesEvent>(_onFetchCities);
+  RegionCityBloc({
+    required this.getRegionsUseCase,
+    required this.getCitiesByRegionUseCase,
+  }) : super(RegionCityInitial()) {
+    on<FetchRegionsEvent>(_onFetchRegions);
+    on<FetchCitiesByRegionEvent>(_onFetchCitiesByRegion);
   }
 
-  Future<void> _onFetchCities(
-    FetchCitiesEvent event,
-    Emitter<CityState> emit,
-  ) async {
-    emit(CityLoading());
+  Future<void> _onFetchRegions(
+      FetchRegionsEvent event, Emitter<RegionCityState> emit) async {
+    emit(RegionCityLoading());
 
-    final result = await getCitiesUseCase();
+    final result = await getRegionsUseCase();
 
     result.fold(
-      (failure) => emit(CityError(failure.message)),
-      (cities) {
-        // Agrupar cidades por estado
-        final groupedCities = groupBy<CityEntity, String>(
-          cities,
-          (city) {
-            return '${city.microregion?.mesoregion?.sa?.name ?? ""} (${city.microregion?.mesoregion?.sa?.acronym ?? ""})';
-          },
-        );
+      (failure) => emit(RegionCityError(failure.message)),
+      (regions) => emit(RegionsLoaded(regions)),
+    );
+  }
 
-        // Ordenar as chaves do mapa
-        final sortedGroupedCities = Map.fromEntries(
-          groupedCities.entries.toList()
-            ..sort((a, b) => a.key.compareTo(b.key)),
-        );
+  Future<void> _onFetchCitiesByRegion(
+      FetchCitiesByRegionEvent event, Emitter<RegionCityState> emit) async {
+    emit(RegionCityLoading());
 
-        // Emitir o estado com as cidades agrupadas
-        emit(CityLoaded(sortedGroupedCities));
-      },
+    final result = await getCitiesByRegionUseCase(regionId: event.regionId);
+
+    result.fold(
+      (failure) => emit(RegionCityError(failure.message)),
+      (cities) => emit(CitiesLoaded(cities)),
     );
   }
 }

@@ -1,7 +1,7 @@
-import '../../data/models/region_model.dart';
+import 'package:equatable/equatable.dart';
 
-class RegionEntity {
-  RegionEntity({
+class RegionEntity extends Equatable {
+  const RegionEntity({
     required this.id,
     required this.acronym,
     required this.name,
@@ -16,5 +16,10 @@ class RegionEntity {
     return "$id, $acronym, $name, ";
   }
 
-  RegionModel toModel() => RegionModel(id: id, acronym: acronym, name: name);
+  @override
+  List<Object?> get props => [
+        id,
+        acronym,
+        name,
+      ];
 }

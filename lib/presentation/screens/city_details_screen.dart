@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../domain/entities/city_entity.dart';
-import '../models/models.dart';
 import '../widgets/widgets.dart';
 
 class CityDetailsScreen extends StatelessWidget {
@@ -11,8 +10,6 @@ class CityDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cityDetails = city.toCityDetails();
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Detalhes da Cidade'),
@@ -26,27 +23,32 @@ class CityDetailsScreen extends StatelessWidget {
             CityDetailsItem(
               icon: Icons.location_on,
               label: "Nome do Município",
-              value: cityDetails.cityName,
+              value: city.cityName,
             ),
             CityDetailsItem(
               icon: Icons.code,
               label: "Código do Município",
-              value: cityDetails.cityId.toString(),
+              value: city.cityId.toString(),
             ),
             CityDetailsItem(
               icon: Icons.my_location,
               label: "Nome do Estado",
-              value: '${cityDetails.stateName} (${cityDetails.stateAcronym})',
+              value: city.saName,
+            ),
+            CityDetailsItem(
+              icon: Icons.my_location,
+              label: "Sigla do Estado",
+              value: city.saAcronym,
             ),
             CityDetailsItem(
               icon: Icons.location_city,
               label: "Microrregião",
-              value: cityDetails.microregionName,
+              value: city.microregion,
             ),
             CityDetailsItem(
               icon: Icons.map,
               label: "Mesorregião",
-              value: cityDetails.mesoregionName,
+              value: city.mesoregion,
             ),
           ],
         ),

@@ -1,17 +1,34 @@
-import '../../data/models/city_model.dart';
-import 'entities.dart';
+import 'package:equatable/equatable.dart';
 
-class CityEntity {
-  CityEntity({
-    required this.id,
-    required this.name,
+class CityEntity extends Equatable {
+  const CityEntity({
+    required this.cityId,
+    required this.cityName,
     required this.microregion,
+    required this.mesoregion,
+    required this.saAcronym,
+    required this.saName,
   });
 
-  final int id;
-  final String name;
-  final MicroregionEntity? microregion;
+  final int cityId;
+  final String cityName;
+  final String microregion;
+  final String mesoregion;
+  final String saAcronym;
+  final String saName;
 
-  CityModel toModel() =>
-      CityModel(id: id, name: name, microregion: microregion?.toModel());
+  @override
+  String toString() {
+    return "$cityId, $cityName, $microregion, $mesoregion, $saAcronym, $saName, ";
+  }
+
+  @override
+  List<Object?> get props => [
+        cityId,
+        cityName,
+        microregion,
+        mesoregion,
+        saAcronym,
+        saName,
+      ];
 }

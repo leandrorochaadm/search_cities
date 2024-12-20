@@ -1,7 +1,9 @@
-import '../../domain/domain.dart';
+import 'package:equatable/equatable.dart';
 
-class RegionModel {
-  RegionModel({
+import '../../domain/entities/region_entity.dart';
+
+class RegionModel extends Equatable {
+  const RegionModel({
     required this.id,
     required this.acronym,
     required this.name,
@@ -19,22 +21,17 @@ class RegionModel {
     );
   }
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "sigla": acronym,
-        "nome": name,
-      };
-
   @override
   String toString() {
     return "$id, $acronym, $name, ";
   }
 
-  RegionEntity toEntity() {
-    return RegionEntity(
-      id: id,
-      acronym: acronym,
-      name: name,
-    );
-  }
+  @override
+  List<Object?> get props => [
+        id,
+        acronym,
+        name,
+      ];
+
+  toEntity() => RegionEntity(id: id, acronym: acronym, name: name);
 }

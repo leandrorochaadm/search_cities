@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../domain/entities/entities.dart';
-import '../models/models.dart';
 
 class CityItemWidget extends StatelessWidget {
   const CityItemWidget({
@@ -15,8 +14,6 @@ class CityItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cityInfo = city.toCityInfo();
-
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 12.0,
@@ -47,7 +44,7 @@ class CityItemWidget extends StatelessWidget {
               const SizedBox(width: 16.0),
               Expanded(
                 child: Text(
-                  cityInfo.cityName,
+                  city.cityName,
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ),
