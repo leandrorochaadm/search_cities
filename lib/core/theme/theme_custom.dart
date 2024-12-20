@@ -17,7 +17,7 @@ class ThemeCustom {
       ),
     ),
     cardTheme: CardTheme(
-      color: Colors.grey.shade800,
+      color: Colors.grey.shade700,
       elevation: 4.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
@@ -31,31 +31,37 @@ class ThemeCustom {
       ),
       bodyMedium: TextStyle(
         fontSize: 14.0,
-        color: Colors.white70,
+        color: Colors.white,
       ),
       labelLarge: TextStyle(
         fontSize: 16.0,
         fontWeight: FontWeight.bold,
         color: Colors.redAccent,
       ),
+      labelMedium: TextStyle(
+        fontSize: 14.0,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.grey.shade800,
-        textStyle: const TextStyle(fontSize: 16.0),
+        textStyle: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+        foregroundColor: Colors.white,
       ),
     ),
     iconTheme: const IconThemeData(
-      color: Colors.white70,
+      color: Colors.white,
       size: 24.0,
     ),
     expansionTileTheme: ExpansionTileThemeData(
       collapsedBackgroundColor: Colors.grey.shade800,
       backgroundColor: Colors.grey.shade800,
       textColor: Colors.white,
-      collapsedTextColor: Colors.white70,
-      iconColor: Colors.white70,
-      collapsedIconColor: Colors.white70,
+      collapsedTextColor: Colors.white,
+      iconColor: Colors.white,
+      collapsedIconColor: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
       ),
@@ -63,6 +69,8 @@ class ThemeCustom {
         borderRadius: BorderRadius.circular(12.0),
       ),
     ),
-    shadowColor: Colors.black12,
+    progressIndicatorTheme: ProgressIndicatorThemeData(
+      color: Colors.white,
+    ),
   );
 }

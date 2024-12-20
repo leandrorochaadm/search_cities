@@ -26,8 +26,9 @@ class CityBloc extends Bloc<CityEvent, CityState> {
         // Agrupar cidades por estado
         final groupedCities = groupBy<CityEntity, String>(
           cities,
-          (city) =>
-              city.microregion?.mesoregion?.sa?.name ?? "Estado Desconhecido",
+          (city) {
+            return '${city.microregion?.mesoregion?.sa?.name ?? ""} (${city.microregion?.mesoregion?.sa?.acronym ?? ""})';
+          },
         );
 
         // Ordenar as chaves do mapa
@@ -37,7 +38,7 @@ class CityBloc extends Bloc<CityEvent, CityState> {
         );
 
         // Emitir o estado com as cidades agrupadas
-        emit(GroupedCitiesLoaded(sortedGroupedCities));
+        emit(CityLoaded(sortedGroupedCities));
       },
     );
   }

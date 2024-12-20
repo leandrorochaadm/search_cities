@@ -9,15 +9,6 @@ abstract class CityState extends Equatable {
 
 class CityLoading extends CityState {}
 
-class CityLoaded extends CityState {
-  final List<CityEntity> cities;
-
-  CityLoaded(this.cities);
-
-  @override
-  List<Object?> get props => [cities];
-}
-
 class CityError extends CityState {
   final String message;
 
@@ -27,10 +18,10 @@ class CityError extends CityState {
   List<Object?> get props => [message];
 }
 
-class GroupedCitiesLoaded extends CityState {
+class CityLoaded extends CityState {
   final Map<String, List<CityEntity>> groupedCities;
 
-  GroupedCitiesLoaded(this.groupedCities);
+  CityLoaded(this.groupedCities);
 
   @override
   List<Object?> get props => [groupedCities];
