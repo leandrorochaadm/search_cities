@@ -17,7 +17,7 @@ class RegionCityScreen extends StatelessWidget {
           getCitiesByRegionUseCase: context.read<GetCitiesByRegionUseCase>(),
         )..add(FetchRegionsEvent()),
         child: Scaffold(
-          appBar: AppBar(title: const Text("Estados e Cidades")),
+          appBar: AppBar(title: const Text('Municípios por estados')),
           body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: BlocBuilder<RegionCityBloc, RegionCityState>(

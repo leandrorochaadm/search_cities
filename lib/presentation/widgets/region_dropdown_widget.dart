@@ -45,6 +45,7 @@ class RegionDropdownWidget extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               leading: Icon(Icons.clear),
+              tileColor: Colors.grey.shade600,
             ),
           ),
           ...regions.map(
